@@ -1,4 +1,5 @@
-apiVersion: apps/v1
+---
+apiVersion: app/v1
 kind: Deployment
 metadata:
   name: edgenode-deployment
@@ -15,13 +16,34 @@ spec:
         app: edgenode
     spec:
       containers:
-        - name: edgenode
-          image: docker.io/fabiocalt/edgenode:latest
+        - name: edgenodecontrolpanel
+          image: docker.io/fabiocalt/edgenodecontrolpanel:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8090
+          env:
+            - name: APP_ENV
+              value: "GoEdgeNodeControlPanel"
+            - name: PORTS
+              value: "8080"
+        - name: edgenodeinferencepanel
+          image: docker.io/fabiocalt/edgenodeinferencepanel:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
             - name: APP_ENV
-              value: "GoEdgeNode"
+              value: "GoEdgeNodeInferencePanel"
             - name: PORTS
-              value: "8080"
+              value: "8090"
+              
+kind: Service
+metadata:
+  name: edgenodepanel
+spec:
+  selector:
+    app: edgenode
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
