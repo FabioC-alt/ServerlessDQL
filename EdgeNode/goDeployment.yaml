@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edgenode-deployment
+  labels:
+    app: edgenode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edgenode
+  template:
+    metadata:
+      labels:
+        app: edgenode
+    spec:
+      containers:
+        - name: edgenode
+          image: ghcr.io/fabioc-alt/edgenode:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: AppEnv
+              value: "GoEdgeNode"
+            - name: Address
+              value: "192.168.x.x"
+            - name: Port
+              value: "8080"
