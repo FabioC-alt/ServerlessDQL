@@ -16,14 +16,12 @@ spec:
     spec:
       containers:
         - name: edgenode
-          image: ghcr.io/fabioc-alt/edgenode:latest
+          image: docker.io/fabiocalt/edgenode:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
-            - name: AppEnv
+            - name: APP_ENV
               value: "GoEdgeNode"
-            - name: Address
-              value: "192.168.x.x"
-            - name: Port
+            - name: PORTS
               value: "8080"
